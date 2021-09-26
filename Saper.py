@@ -39,6 +39,17 @@ def markup (column, line): # заполняет ячейки количеств�
             res += 1
     return str(res)
 
+def open(y,x):
+     if open_array[y][x]=='*':
+          print("Game over!")
+          print(open_array)
+          return False
+     else:
+         close_array[y][x] = open_array[y][x]
+         global count
+         count+=1
+         return True
+
 def save_match(): # кодирование данных и ввод в файл
     passkey = 'wow'
     str1 = str(high)+' '+str(leng)+' '+str(cb)+' '+str(count)
@@ -51,6 +62,7 @@ def save_match(): # кодирование данных и ввод в файл
         print(str1, file=inf)
         print(str2, file=inf)
         print(str3, file=inf)
+        print("The match was saved!")
 
 def open_save(): # вывод из файла и декодирование данных
     with open('save_match.txt', 'r', encoding = "UTF-8") as ouf:
@@ -82,20 +94,16 @@ while count!=high*leng-cb: # главный цикл игры
     s=input().split()
     s[0],s[1]=int(s[0]),int(s[1])
     if s[2]=='Open':
-        if open_array[s[0]][s[1]]=='*':
-            print("Game over!")
-            print(open_array)
-            break
+        if open(s[0],s[1]):
+            pass
         else:
-            close_array[s[0]][s[1]] = open_array[s[0]][s[1]]
-            count+=1
-    elif s[2] == 'Flag':
+            break
+    if s[2] == 'Flag':
         close_array[s[0]][s[1]] = 'F'
     elif s[2] == 'Unflag':
         close_array[s[0]][s[1]] = '+'
     elif s[2] == 'Save':
         save_match()
-        print("The match was saved!")
         break
     print(close_array)
 if count==high*leng-cb:
